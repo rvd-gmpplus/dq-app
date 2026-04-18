@@ -3,7 +3,7 @@ import { useSettingsStore } from '@/stores/settingsStore';
 function BrandMark() {
   return (
     <img
-      src="/logos/gmp-international-landscape.png"
+      src={`${import.meta.env.BASE_URL}logos/gmp-international-landscape.png`}
       alt="GMP+ International"
       className="h-8 w-auto shrink-0"
     />

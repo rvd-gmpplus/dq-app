@@ -1,10 +1,30 @@
 import { Outlet } from 'react-router-dom';
 import { Monitor } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import Header from './Header';
 import NavSidebar from './NavSidebar';
 import { useFirstRun } from '@/hooks/useFirstRun';
 import OnboardingModal from '@/components/onboarding/OnboardingModal';
 import ToastContainer from '@/components/common/ToastContainer';
+
+function useLastPush() {
+  const [label, setLabel] = useState<string>('...');
+  useEffect(() => {
+    fetch('https://api.github.com/repos/rvd-gmpplus/dq-app/branches/v1')
+      .then((r) => r.json())
+      .then((data) => {
+        const d = new Date(data.commit.commit.committer.date);
+        const time = d.toLocaleString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false });
+        const weekday = d.toLocaleString('en-GB', { weekday: 'long' });
+        const day = d.getDate();
+        const month = d.toLocaleString('en-GB', { month: 'long' });
+        const year = d.getFullYear();
+        setLabel(`${time} on ${weekday} ${day} ${month} ${year}`);
+      })
+      .catch(() => setLabel('unavailable'));
+  }, []);
+  return label;
+}
 
 function NarrowViewportNotice() {
   return (
@@ -30,6 +50,7 @@ function NarrowViewportNotice() {
 
 export default function Shell() {
   useFirstRun();
+  const lastPush = useLastPush();
   return (
     <>
       <NarrowViewportNotice />
@@ -45,7 +66,7 @@ export default function Shell() {
         </div>
         <OnboardingModal />
         <footer className="border-t border-slate-100 bg-slate-50 px-6 py-1.5 text-center text-xs text-slate-400">
-          Rick van Dijk &middot; IT Lead &middot; GMP+ International &middot; Version 1.0 &middot; Last modified: 21:55 on Saturday 18 April 2026
+          Rick van Dijk &middot; IT Lead &middot; GMP+ International &middot; Version 1.0 &middot; Last modified: {lastPush}
         </footer>
       </div>
       <ToastContainer />
