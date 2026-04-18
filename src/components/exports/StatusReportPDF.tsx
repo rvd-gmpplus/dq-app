@@ -1,6 +1,7 @@
 import {
   Document,
   Font,
+  Image,
   Page,
   Path,
   Rect,
@@ -22,6 +23,7 @@ import type { UseCase, Quadrant } from '@/types/useCase';
 // at module load; harmless if called twice thanks to @react-pdf's
 // idempotent family check.
 const FONT_BASE = `${import.meta.env.BASE_URL}fonts/`;
+const LOGO_SRC = `${import.meta.env.BASE_URL}logos/GMP+international-landscape.png`;
 Font.register({
   family: 'Open Sans',
   fonts: [
@@ -204,11 +206,14 @@ const styles = StyleSheet.create({
 function pageHeader(periodLabel: string, author: string, pageNum: string) {
   return (
     <View style={styles.header} fixed>
-      <View>
-        <Text style={styles.headerTitle}>GMP+ Data Quality Project: Status</Text>
-        <Text style={styles.headerSub}>
-          {periodLabel} · {author}
-        </Text>
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+        <Image src={LOGO_SRC} style={{ height: 20, objectFit: 'contain' }} />
+        <View>
+          <Text style={styles.headerTitle}>GMP+ Data Quality Project: Status</Text>
+          <Text style={styles.headerSub}>
+            {periodLabel} · {author}
+          </Text>
+        </View>
       </View>
       <Text style={styles.pageNumber}>{pageNum}</Text>
     </View>
