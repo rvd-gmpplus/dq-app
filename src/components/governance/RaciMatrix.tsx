@@ -26,8 +26,13 @@ export default function RaciMatrix() {
   const dataObjects = useDataObjectStore((s) =>
     [...Object.values(s.items)].sort((a, b) => a.name.localeCompare(b.name)),
   );
-  const getCell = useRaciStore((s) => s.getCell);
+  // Subscribe to items so the matrix rerenders on every mutation.
+  const items = useRaciStore((s) => s.items);
   const setCell = useRaciStore((s) => s.setCell);
+  const getCell = (stakeholderId: string, dataObjectId: string) =>
+    Object.values(items).find(
+      (a) => a.stakeholderId === stakeholderId && a.dataObjectId === dataObjectId,
+    );
 
   if (stakeholders.length === 0 || dataObjects.length === 0) {
     return (

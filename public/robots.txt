@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://rvd-gmpplus.github.io/dq-app/sitemap.xml

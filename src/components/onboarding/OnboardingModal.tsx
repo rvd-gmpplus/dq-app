@@ -1,9 +1,11 @@
 import { Grid2X2, ListPlus, BarChart3, X } from 'lucide-react';
 import { useSettingsStore } from '@/stores/settingsStore';
+import { useFocusTrap } from '@/hooks/useFocusTrap';
 
 export default function OnboardingModal() {
   const dismissed = useSettingsStore((s) => s.onboardingDismissed);
   const dismiss = useSettingsStore((s) => s.dismissOnboarding);
+  const ref = useFocusTrap<HTMLDivElement>({ active: !dismissed, onEscape: dismiss });
   if (dismissed) return null;
 
   return (
@@ -13,7 +15,10 @@ export default function OnboardingModal() {
       aria-modal="true"
       aria-labelledby="onboarding-title"
     >
-      <div className="relative w-full max-w-xl rounded-lg border border-slate-200 bg-white shadow-2xl">
+      <div
+        ref={ref}
+        className="relative w-full max-w-xl rounded-lg border border-slate-200 bg-white shadow-2xl"
+      >
         <button
           type="button"
           aria-label="Close"

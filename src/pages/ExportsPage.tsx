@@ -7,6 +7,8 @@ import { useUseCaseStore } from '@/stores/useCaseStore';
 import { usePhaseStore } from '@/stores/phaseStore';
 import { useRiskStore } from '@/stores/riskStore';
 import { useSettingsStore } from '@/stores/settingsStore';
+import ConfirmTypedDialog from '@/components/common/ConfirmTypedDialog';
+import type { BackupPayload } from '@/types/backup';
 
 type Message = { tone: 'info' | 'error' | 'success'; text: string } | null;
 
@@ -17,6 +19,7 @@ export default function ExportsPage() {
   const author = useSettingsStore((s) => s.currentUser);
   const [message, setMessage] = useState<Message>(null);
   const [busy, setBusy] = useState(false);
+  const [pendingImport, setPendingImport] = useState<{ payload: BackupPayload; name: string } | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const onJson = () => {
@@ -54,15 +57,17 @@ export default function ExportsPage() {
       if (result.issues) console.error(result.issues);
       return;
     }
-    const confirm = window.prompt(
-      `Restoring will replace every store with the contents of "${file.name}". Type YES to continue.`,
-    );
-    if (confirm !== 'YES') {
-      setMessage({ tone: 'info', text: 'Import cancelled.' });
-      return;
-    }
-    applyBackup(result.payload);
-    setMessage({ tone: 'success', text: `Restored ${result.payload.useCases.length} use cases from backup.` });
+    setPendingImport({ payload: result.payload, name: file.name });
+  };
+
+  const onImportConfirm = () => {
+    if (!pendingImport) return;
+    applyBackup(pendingImport.payload);
+    setMessage({
+      tone: 'success',
+      text: `Restored ${pendingImport.payload.useCases.length} use cases from ${pendingImport.name}.`,
+    });
+    setPendingImport(null);
   };
 
   return (
@@ -75,19 +80,22 @@ export default function ExportsPage() {
         </p>
       </header>
 
-      {message && (
-        <div
-          className={
-            message.tone === 'error'
+      <div
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+        className={
+          message
+            ? message.tone === 'error'
               ? 'rounded-lg border border-rose-200 bg-rose-50 px-4 py-2 text-sm text-rose-700'
               : message.tone === 'success'
                 ? 'rounded-lg border border-gmp-green-50 bg-gmp-green-50 px-4 py-2 text-sm text-gmp-green-700'
                 : 'rounded-lg border border-slate-200 bg-slate-50 px-4 py-2 text-sm text-slate-700'
-          }
-        >
-          {message.text}
-        </div>
-      )}
+            : 'sr-only'
+        }
+      >
+        {message?.text}
+      </div>
 
       <section className="grid gap-4 md:grid-cols-2">
         <ExportCard
@@ -136,6 +144,24 @@ export default function ExportsPage() {
           or the project repo).
         </p>
       </section>
+
+      <ConfirmTypedDialog
+        open={pendingImport !== null}
+        title="Replace every store?"
+        description={
+          pendingImport
+            ? `Restoring "${pendingImport.name}" replaces every use case, phase, risk, stakeholder, data object, RACI assignment, pillar, and setting. Export the current state first if you might want it back.`
+            : ''
+        }
+        confirmWord="REPLACE"
+        confirmButtonLabel="Restore from backup"
+        tone="caution"
+        onConfirm={onImportConfirm}
+        onCancel={() => {
+          setPendingImport(null);
+          setMessage({ tone: 'info', text: 'Import cancelled.' });
+        }}
+      />
     </div>
   );
 }
@@ -166,6 +192,7 @@ function ExportCard({
         type="button"
         onClick={action.onClick}
         disabled={disabled}
+        aria-busy={disabled}
         className="mt-auto inline-flex w-fit items-center gap-1.5 rounded-md bg-gmp-purple px-3 py-1.5 text-sm font-medium text-white hover:bg-gmp-purple-700 disabled:cursor-not-allowed disabled:bg-slate-300"
       >
         <Download size={13} aria-hidden="true" />

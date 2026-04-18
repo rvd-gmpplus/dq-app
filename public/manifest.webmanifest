@@ -1,0 +1,18 @@
+{
+  "name": "GMP+ Data Quality app",
+  "short_name": "GMP+ DQ",
+  "description": "Single source of truth for the GMP+ International Data Quality Project.",
+  "start_url": "/dq-app/",
+  "scope": "/dq-app/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#6859A7",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

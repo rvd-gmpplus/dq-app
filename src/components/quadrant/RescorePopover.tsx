@@ -11,6 +11,7 @@ import SubScoreSlider from '@/components/useCase/SubScoreSlider';
 import type { UseCase } from '@/types/useCase';
 import { useSettingsStore } from '@/stores/settingsStore';
 import { useUseCaseStore } from '@/stores/useCaseStore';
+import { useFocusTrap } from '@/hooks/useFocusTrap';
 
 type BusinessScores = Omit<UseCase['businessImpact'], 'score' | 'notes'>;
 type ItDataScores = Omit<UseCase['itDataImpact'], 'score' | 'notes'>;
@@ -53,6 +54,7 @@ export default function RescorePopover({
 
   const [bi, setBi] = useState(initialBi);
   const [it, setIt] = useState(initialIt);
+  const ref = useFocusTrap<HTMLDivElement>({ active: true, onEscape: onClose });
 
   useEffect(() => {
     setBi(initialBi);
@@ -80,6 +82,7 @@ export default function RescorePopover({
       onClick={onClose}
     >
       <div
+        ref={ref}
         className="flex max-h-[90vh] w-full max-w-3xl flex-col overflow-hidden rounded-lg border border-slate-200 bg-white shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >

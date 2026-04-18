@@ -5,6 +5,7 @@ import QuadrantBadge from '@/components/common/QuadrantBadge';
 import StatusBadge from '@/components/common/StatusBadge';
 import type { UseCase } from '@/types/useCase';
 import { useSettingsStore } from '@/stores/settingsStore';
+import { useFocusTrap } from '@/hooks/useFocusTrap';
 
 export default function QuadrantDrawer({
   uc,
@@ -14,6 +15,7 @@ export default function QuadrantDrawer({
   onClose: () => void;
 }) {
   const bcg = useSettingsStore((s) => s.bcgLabels);
+  const ref = useFocusTrap<HTMLDivElement>({ active: uc !== null, onEscape: onClose });
   if (!uc) return null;
 
   return (
@@ -24,6 +26,7 @@ export default function QuadrantDrawer({
       onClick={onClose}
     >
       <div
+        ref={ref}
         className="flex h-full w-full max-w-md flex-col border-l border-slate-200 bg-white shadow-xl"
         onClick={(e) => e.stopPropagation()}
       >

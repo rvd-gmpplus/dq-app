@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams, useSearchParams, Link } from 'react-router-dom';
 import { ArrowLeft, Copy, Printer, Trash2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -7,6 +7,7 @@ import { useSettingsStore } from '@/stores/settingsStore';
 import QuadrantBadge from '@/components/common/QuadrantBadge';
 import StatusBadge from '@/components/common/StatusBadge';
 import PillarBadge from '@/components/common/PillarBadge';
+import ConfirmTypedDialog from '@/components/common/ConfirmTypedDialog';
 import OverviewTab from '@/components/useCase/OverviewTab';
 import ScoringTab from '@/components/useCase/ScoringTab';
 import HistoryTimeline from '@/components/useCase/HistoryTimeline';
@@ -21,6 +22,7 @@ export default function UseCaseDetailPage() {
   const create = useUseCaseStore((s) => s.create);
   const remove = useUseCaseStore((s) => s.remove);
   const bcg = useSettingsStore((s) => s.bcgLabels);
+  const [deleteOpen, setDeleteOpen] = useState(false);
 
   const uc = id ? useUseCaseStore((s) => s.items[id]) : undefined;
 
@@ -56,14 +58,11 @@ export default function UseCaseDetailPage() {
     navigate(`/use-cases/${copy.id}`);
   };
 
-  const onDelete = () => {
-    const confirmation = window.prompt(
-      `Delete ${uc.code} "${uc.title}"? This cannot be undone. Type DELETE to confirm.`,
-    );
-    if (confirmation === 'DELETE') {
-      remove(uc.id);
-      navigate('/use-cases');
-    }
+  const onDelete = () => setDeleteOpen(true);
+  const onDeleteConfirm = () => {
+    remove(uc.id);
+    setDeleteOpen(false);
+    navigate('/use-cases');
   };
 
   return (
@@ -151,6 +150,16 @@ export default function UseCaseDetailPage() {
         {activeTab === 'scoring' && <ScoringTab uc={uc} />}
         {activeTab === 'history' && <HistoryTimeline uc={uc} />}
       </div>
+
+      <ConfirmTypedDialog
+        open={deleteOpen}
+        title={`Delete ${uc.code}?`}
+        description={`This removes "${uc.title}" and its history. The action cannot be undone without restoring from a backup.`}
+        confirmWord="DELETE"
+        confirmButtonLabel="Delete use case"
+        onConfirm={onDeleteConfirm}
+        onCancel={() => setDeleteOpen(false)}
+      />
     </div>
   );
 }

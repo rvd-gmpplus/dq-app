@@ -1,33 +1,44 @@
+import { lazy, Suspense } from 'react';
 import { createHashRouter } from 'react-router-dom';
 import Shell from '@/components/layout/Shell';
-import DashboardPage from '@/pages/DashboardPage';
-import UseCaseListPage from '@/pages/UseCaseListPage';
-import UseCaseDetailPage from '@/pages/UseCaseDetailPage';
-import QuadrantPage from '@/pages/QuadrantPage';
-import PillarsPage from '@/pages/PillarsPage';
-import PhasesPage from '@/pages/PhasesPage';
-import GovernancePage from '@/pages/GovernancePage';
-import RisksPage from '@/pages/RisksPage';
-import StakeholdersPage from '@/pages/StakeholdersPage';
-import ExportsPage from '@/pages/ExportsPage';
-import SettingsPage from '@/pages/SettingsPage';
+import PageFallback from '@/components/common/PageFallback';
+
+const DashboardPage = lazy(() => import('@/pages/DashboardPage'));
+const UseCaseListPage = lazy(() => import('@/pages/UseCaseListPage'));
+const UseCaseDetailPage = lazy(() => import('@/pages/UseCaseDetailPage'));
+const QuadrantPage = lazy(() => import('@/pages/QuadrantPage'));
+const PillarsPage = lazy(() => import('@/pages/PillarsPage'));
+const PhasesPage = lazy(() => import('@/pages/PhasesPage'));
+const GovernancePage = lazy(() => import('@/pages/GovernancePage'));
+const RisksPage = lazy(() => import('@/pages/RisksPage'));
+const StakeholdersPage = lazy(() => import('@/pages/StakeholdersPage'));
+const ExportsPage = lazy(() => import('@/pages/ExportsPage'));
+const SettingsPage = lazy(() => import('@/pages/SettingsPage'));
+
+function lazyPage(Element: React.ComponentType) {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <Element />
+    </Suspense>
+  );
+}
 
 export const router = createHashRouter([
   {
     path: '/',
     element: <Shell />,
     children: [
-      { index: true, element: <DashboardPage /> },
-      { path: 'use-cases', element: <UseCaseListPage /> },
-      { path: 'use-cases/:id', element: <UseCaseDetailPage /> },
-      { path: 'quadrant', element: <QuadrantPage /> },
-      { path: 'pillars', element: <PillarsPage /> },
-      { path: 'phases', element: <PhasesPage /> },
-      { path: 'governance', element: <GovernancePage /> },
-      { path: 'risks', element: <RisksPage /> },
-      { path: 'stakeholders', element: <StakeholdersPage /> },
-      { path: 'exports', element: <ExportsPage /> },
-      { path: 'settings', element: <SettingsPage /> },
+      { index: true, element: lazyPage(DashboardPage) },
+      { path: 'use-cases', element: lazyPage(UseCaseListPage) },
+      { path: 'use-cases/:id', element: lazyPage(UseCaseDetailPage) },
+      { path: 'quadrant', element: lazyPage(QuadrantPage) },
+      { path: 'pillars', element: lazyPage(PillarsPage) },
+      { path: 'phases', element: lazyPage(PhasesPage) },
+      { path: 'governance', element: lazyPage(GovernancePage) },
+      { path: 'risks', element: lazyPage(RisksPage) },
+      { path: 'stakeholders', element: lazyPage(StakeholdersPage) },
+      { path: 'exports', element: lazyPage(ExportsPage) },
+      { path: 'settings', element: lazyPage(SettingsPage) },
     ],
   },
 ]);

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { AlertTriangle, RotateCcw, Save } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import ConfirmTypedDialog from '@/components/common/ConfirmTypedDialog';
 import { useSettingsStore } from '@/stores/settingsStore';
 import { useStakeholderStore } from '@/stores/stakeholderStore';
 import { useUseCaseStore } from '@/stores/useCaseStore';
@@ -58,12 +59,9 @@ export default function SettingsPage() {
 
   const [weights, setWeights] = useState<ScoringWeights>(s.scoringWeights);
   const dirty = JSON.stringify(weights) !== JSON.stringify(s.scoringWeights);
-
-  const [confirmReset, setConfirmReset] = useState('');
-  const canReset = confirmReset === 'RESET';
+  const [resetOpen, setResetOpen] = useState(false);
 
   const onResetAll = () => {
-    if (!canReset) return;
     useCases.reset();
     phases.reset();
     risks.reset();
@@ -72,7 +70,7 @@ export default function SettingsPage() {
     pillars.reset();
     s.reset();
     localStorage.removeItem('dq:first-run-complete');
-    setConfirmReset('');
+    setResetOpen(false);
     // Force a full reload so the first-run hook reseeds from the bundled seed modules.
     window.location.reload();
   };
@@ -326,26 +324,28 @@ export default function SettingsPage() {
           Danger zone
         </h2>
         <p className="mt-1 text-xs text-rose-700">
-          Reset wipes every store back to the bundled seed data. Type RESET below to confirm.
+          Reset wipes every store back to the bundled seed data. Export a JSON backup first.
         </p>
-        <div className="mt-3 flex items-center gap-2">
-          <input
-            type="text"
-            placeholder="Type RESET to confirm"
-            value={confirmReset}
-            onChange={(e) => setConfirmReset(e.target.value)}
-            className="rounded-md border border-rose-200 bg-white px-3 py-1.5 text-sm placeholder:text-rose-400 focus:border-rose-500 focus:outline-none"
-          />
+        <div className="mt-3">
           <button
             type="button"
-            disabled={!canReset}
-            onClick={onResetAll}
-            className="inline-flex items-center gap-1.5 rounded-md bg-rose-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-rose-700 disabled:cursor-not-allowed disabled:bg-rose-300"
+            onClick={() => setResetOpen(true)}
+            className="inline-flex items-center gap-1.5 rounded-md bg-rose-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-rose-700"
           >
             Reset all data
           </button>
         </div>
       </section>
+
+      <ConfirmTypedDialog
+        open={resetOpen}
+        title="Reset every store?"
+        description="This removes every use case, every risk, every stakeholder, every setting override, and replaces them with the bundled seed data. Export a JSON backup first if you need to keep anything."
+        confirmWord="RESET"
+        confirmButtonLabel="Reset all data"
+        onConfirm={onResetAll}
+        onCancel={() => setResetOpen(false)}
+      />
     </div>
   );
 }

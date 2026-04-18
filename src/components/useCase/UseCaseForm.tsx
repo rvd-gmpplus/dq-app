@@ -6,6 +6,7 @@ import { PillarEnum, type Pillar } from '@/types/useCase';
 import { useUseCaseStore } from '@/stores/useCaseStore';
 import { useStakeholderStore } from '@/stores/stakeholderStore';
 import { useSettingsStore } from '@/stores/settingsStore';
+import { useFocusTrap } from '@/hooks/useFocusTrap';
 
 export default function UseCaseForm({
   open,
@@ -24,6 +25,7 @@ export default function UseCaseForm({
   const [owner, setOwner] = useState(defaultUser);
   const [submittedBy, setSubmittedBy] = useState(defaultUser);
   const [error, setError] = useState<string | null>(null);
+  const ref = useFocusTrap<HTMLDivElement>({ active: open, onEscape: onClose });
 
   useEffect(() => {
     if (open) {
@@ -66,6 +68,7 @@ export default function UseCaseForm({
       onClick={onClose}
     >
       <div
+        ref={ref}
         className="flex h-full w-full max-w-md flex-col border-l border-slate-200 bg-white shadow-xl"
         onClick={(e) => e.stopPropagation()}
       >
