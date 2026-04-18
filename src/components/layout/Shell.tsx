@@ -2,6 +2,7 @@ import { Outlet } from 'react-router-dom';
 import Header from './Header';
 import NavSidebar from './NavSidebar';
 import { useFirstRun } from '@/hooks/useFirstRun';
+import OnboardingModal from '@/components/onboarding/OnboardingModal';
 
 export default function Shell() {
   useFirstRun();
@@ -16,6 +17,7 @@ export default function Shell() {
           </div>
         </main>
       </div>
+      <OnboardingModal />
     </div>
   );
 }
