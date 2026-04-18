@@ -44,6 +44,9 @@ export default function Shell() {
           </main>
         </div>
         <OnboardingModal />
+        <footer className="border-t border-slate-100 bg-slate-50 px-6 py-1.5 text-center text-xs text-slate-400">
+          Rick van Dijk &middot; IT Lead &middot; GMP+ International &middot; Version 1.0 &middot; Last modified: 21:55 on Saturday 18 April 2026
+        </footer>
       </div>
       <ToastContainer />
     </>
