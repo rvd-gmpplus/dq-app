@@ -1,0 +1,44 @@
+# User spec and planning documents (private to the working tree)
+*.md
+!README.md
+
+# Source material for seed data (do not commit)
+*.pptx
+USE-CASES/
+
+# Extraction draft
+src/seed/useCases.draft.json
+
+# Dependencies and build output
+node_modules
+dist
+dist-ssr
+build
+
+# Local environment overrides
+*.local
+.env
+.env.local
+.env.*.local
+
+# Editor and OS
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+.idea
+.DS_Store
+Thumbs.db
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Test output and caches
+coverage
+.vitest-cache
+.cache
+
+# Alternative lockfiles (we use npm)
+pnpm-lock.yaml
+yarn.lock
