@@ -56,6 +56,109 @@ https://rvd-gmpplus.github.io/dq-app/
   imported.
 - Vitest + React Testing Library.
 
+## Stack deviations (justified)
+
+The build prompt specified a specific stack and asks that any deviation is
+justified. Four deviations stand against the prompt:
+
+### shadcn/ui is not installed
+
+**Prompt:** "Styling: Tailwind CSS + shadcn/ui".
+
+**What we shipped:** hand-rolled Tailwind primitives (custom `Dialog`,
+`Sheet`, `Popover`, `Tabs`, `ConfirmTypedDialog`, `EmptyState`, `KPITile`,
+badges, filter chips). Every primitive lives in `src/components/common/`
+or next to its feature.
+
+**Why:** the dialog and sheet count in v1 is small (five modals total).
+Hand-rolling them with a shared `useFocusTrap` hook stays under 500 lines,
+ships zero extra dependency weight, and keeps focus behaviour under our
+direct control. Installing shadcn would add the Radix UI dependency graph
+and a copy of every primitive into `src/components/ui/`. Net-zero user-
+visible difference for v1.
+
+**When to revisit:** if we add more than a handful of new modal or form
+surfaces in v1.1, swap to shadcn for long-term maintainability (Radix has
+audited accessibility, upgrades are one `npx shadcn add ...` away). The
+migration is mechanical: ~2-3 hours to swap each custom primitive for its
+shadcn equivalent and delete `useFocusTrap`.
+
+### react-hook-form is not used
+
+**Prompt:** "Forms: react-hook-form + zod for validation".
+
+**What we shipped:** plain React state in `UseCaseForm` (five fields) and
+in `OverviewTab` (per-field inline edit with blur-to-commit). Validation
+happens at the store boundary with the Zod schemas in `src/types/`.
+
+**Why:** `OverviewTab` is inline-edit-per-field, not "submit one big form",
+so react-hook-form adds indirection rather than subtracting it.
+`UseCaseForm` is small enough that `useState` plus a submit handler reads
+cleaner than wiring up `useForm` and `register`. Runtime validation still
+runs through Zod via the types / store layer, so the validation contract
+the prompt cares about is intact.
+
+**When to revisit:** if we add richer forms (stakeholder add/edit,
+per-pillar edit, OGSM target editor), introduce react-hook-form at that
+moment. Leaving the dependency installed under `package.json` so the
+introduction is a simple `import` in the file that needs it.
+
+### @dnd-kit is not wired to the quadrant drag
+
+**Prompt:** "Drag-and-drop: @dnd-kit/core for the quadrant".
+
+**What we shipped:** native SVG pointer events on the bubble `<circle>`
+elements in `QuadrantChart.tsx`. `onPointerDown` captures the pointer,
+`onPointerMove` tracks the cumulative delta, `onPointerUp` converts back
+to chart coordinates and dispatches the drop event that opens the
+`RescorePopover`. Works on mouse, pen, and touch.
+
+**Why:** @dnd-kit is designed to drag DOM elements between drop zones.
+Our use case is a single-element free drag inside a fixed plot area,
+expressed directly as pointer math on the SVG. The native-event version
+is around 60 lines and has no library overhead. It also avoids the
+common SVG-with-dnd-kit pattern of rendering an HTML overlay above the
+SVG with absolutely-positioned drag handles, which duplicates the bubble
+render tree and complicates the DOM.
+
+**When to revisit:** if WCAG keyboard-drag support becomes a requirement
+(rescore via arrow keys), swap to @dnd-kit's `KeyboardSensor`. The
+current interaction is mouse-and-touch only. The dependency remains
+installed so the swap is isolated to one component.
+
+### Recharts is used only partially
+
+**Prompt:** "Charts: Recharts (quadrant scatter, heatmap, donut, radar)".
+
+**What we shipped:**
+- **Recharts** for the dashboard donut (`QuadrantDonut`) and the scoring-
+  tab radar (`ImpactRadar`).
+- **Pure SVG** for the quadrant (`QuadrantChart`), the phases Gantt
+  (`PhaseTimeline`), and the risk heatmap (`RiskHeatmap`).
+
+**Why:** Recharts excels at standard cartesian and polar charts driven
+from a data array. It fights us on three of our four visualisations:
+
+- The quadrant needs custom bubble rendering (pattern fallback for
+  colour-blind mode, pillar-coloured rings, native drag) that Recharts
+  exposes only via `<Scatter shape={...}>` with awkward ref forwarding.
+- The phases view needs a Gantt layout with planned-vs-actual sub-bars
+  and a "NOW" reference line. Recharts has no Gantt primitive; faking
+  one with a horizontal stacked `BarChart` is less readable than the
+  75-line SVG we have.
+- The risk heatmap is a 5 x 5 grid of tinted cells with a variable
+  number of risk bubbles per cell. Recharts would model this with a
+  matrix of `ReferenceArea` plus a nested `ScatterChart`; the direct
+  SVG version is clearer.
+
+Using the right tool per view keeps the bundle reasonable (Recharts is
+a 348 KB chunk that only loads on pages that import it) and gives us
+pixel-level control where we need it.
+
+**When to revisit:** if a future contributor needs a new chart type that
+Recharts handles well (trend line, stacked bar, area chart), use
+Recharts. The current mix is intentional, not accidental.
+
 ## Local development
 
 ```bash
