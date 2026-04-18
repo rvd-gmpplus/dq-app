@@ -8,15 +8,14 @@ import ToastContainer from '@/components/common/ToastContainer';
 
 function NarrowViewportNotice() {
   return (
-    <div
+    <main
       className="flex min-h-screen flex-col items-center justify-center gap-4 bg-white px-6 text-center lg:hidden"
-      role="alertdialog"
-      aria-live="polite"
+      aria-labelledby="narrow-viewport-title"
     >
       <div className="rounded-full bg-gmp-purple-50 p-4 text-gmp-purple-700">
         <Monitor size={32} aria-hidden="true" />
       </div>
-      <h1 className="text-lg font-semibold text-slate-900">
+      <h1 id="narrow-viewport-title" className="text-lg font-semibold text-slate-900">
         Please open the DQ app on a wider screen
       </h1>
       <p className="max-w-md text-sm text-slate-600">
@@ -24,8 +23,8 @@ function NarrowViewportNotice() {
         quadrant, tables, and timelines correctly. Try a laptop or rotate your tablet to
         landscape.
       </p>
-      <p className="text-xs text-slate-400">A mobile layout is on the v1.1 roadmap.</p>
-    </div>
+      <p className="text-xs text-slate-500">A mobile layout is on the v1.1 roadmap.</p>
+    </main>
   );
 }
 

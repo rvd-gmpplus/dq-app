@@ -20,7 +20,7 @@ function Section({
 }) {
   return (
     <section className="rounded-lg border border-slate-200 bg-white p-5">
-      <h3 className="text-sm font-semibold text-slate-900">{title}</h3>
+      <h2 className="text-sm font-semibold text-slate-900">{title}</h2>
       {description && <p className="mt-0.5 text-xs text-slate-500">{description}</p>}
       <div className="mt-3 space-y-3">{children}</div>
     </section>

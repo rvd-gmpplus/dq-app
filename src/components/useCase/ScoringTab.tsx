@@ -133,7 +133,7 @@ export default function ScoringTab({ uc }: { uc: UseCase }) {
       <div className="space-y-5 lg:col-span-2">
         <section className="rounded-lg border border-slate-200 bg-white p-5">
           <div className="flex items-baseline justify-between">
-            <h3 className="text-sm font-semibold text-slate-900">Business impact</h3>
+            <h2 className="text-sm font-semibold text-slate-900">Business impact</h2>
             <span className="text-2xl font-semibold tabular-nums text-gmp-purple">
               {biScore.toFixed(1)}
             </span>
@@ -160,7 +160,7 @@ export default function ScoringTab({ uc }: { uc: UseCase }) {
 
         <section className="rounded-lg border border-slate-200 bg-white p-5">
           <div className="flex items-baseline justify-between">
-            <h3 className="text-sm font-semibold text-slate-900">IT / Data difficulty</h3>
+            <h2 className="text-sm font-semibold text-slate-900">IT / Data difficulty</h2>
             <span className="text-2xl font-semibold tabular-nums text-gmp-orange">
               {itScore.toFixed(1)}
             </span>
@@ -188,7 +188,7 @@ export default function ScoringTab({ uc }: { uc: UseCase }) {
 
       <aside className="space-y-5">
         <section className="rounded-lg border border-slate-200 bg-white p-5">
-          <h3 className="text-sm font-semibold text-slate-900">Impact profile</h3>
+          <h2 className="text-sm font-semibold text-slate-900">Impact profile</h2>
           <p className="mt-0.5 text-xs text-slate-500">
             Business axes in purple, IT / Data axes in orange.
           </p>
@@ -206,7 +206,7 @@ export default function ScoringTab({ uc }: { uc: UseCase }) {
         </section>
 
         <section className="rounded-lg border border-slate-200 bg-white p-5">
-          <h3 className="text-sm font-semibold text-slate-900">Projected quadrant</h3>
+          <h2 className="text-sm font-semibold text-slate-900">Projected quadrant</h2>
           <p className="mt-0.5 text-xs text-slate-500">
             Where this use case will land on the quadrant when scores are committed.
           </p>

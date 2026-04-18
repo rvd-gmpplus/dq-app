@@ -12,9 +12,9 @@ export default function DeliverablesChecklist() {
   return (
     <div className="rounded-lg border border-slate-200 bg-white p-4">
       <div className="flex items-baseline justify-between">
-        <h3 className="text-sm font-semibold text-slate-900">
+        <h2 className="text-sm font-semibold text-slate-900">
           Current phase: {current.name}
-        </h3>
+        </h2>
         <span className="text-[11px] uppercase tracking-wide text-slate-500">
           {current.status}
         </span>
@@ -42,9 +42,9 @@ export default function DeliverablesChecklist() {
       </ul>
       {current.blockers.length > 0 && (
         <div className="mt-4 border-t border-slate-100 pt-3">
-          <h4 className="text-[11px] font-semibold uppercase tracking-wide text-rose-600">
+          <h3 className="text-[11px] font-semibold uppercase tracking-wide text-rose-600">
             Blockers
-          </h4>
+          </h3>
           <ul className="mt-1 space-y-0.5 text-xs text-rose-700">
             {current.blockers.map((b) => (
               <li key={b}>· {b}</li>

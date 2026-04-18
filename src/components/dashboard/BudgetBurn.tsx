@@ -26,7 +26,7 @@ export default function BudgetBurn() {
   return (
     <div className="rounded-lg border border-slate-200 bg-white p-4">
       <div className="flex items-baseline justify-between">
-        <h3 className="text-sm font-semibold text-slate-900">Budget</h3>
+        <h2 className="text-sm font-semibold text-slate-900">Budget</h2>
         <span className="text-xs text-slate-500">
           tolerance ±{euro(tolerance)}
         </span>
@@ -40,9 +40,11 @@ export default function BudgetBurn() {
           className={`h-2 rounded-full ${overTolerance ? 'bg-rose-500' : overBudget ? 'bg-amber-500' : 'bg-gmp-purple'}`}
           style={{ width: `${spentPercent}%` }}
           role="progressbar"
+          aria-label="Budget spent as percentage of total project budget"
           aria-valuenow={Math.round(percent)}
           aria-valuemin={0}
           aria-valuemax={100}
+          aria-valuetext={`${Math.round(percent)} per cent of the ${euro(budget)} project budget has been spent`}
         />
       </div>
       <div className="relative mt-1 h-3 text-[10px] text-slate-400">

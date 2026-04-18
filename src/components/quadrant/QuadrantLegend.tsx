@@ -48,7 +48,7 @@ export default function QuadrantLegend({
   return (
     <aside className="flex w-72 shrink-0 flex-col gap-4">
       <section className="rounded-lg border border-slate-200 bg-white p-4">
-        <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-500">Quadrant</h3>
+        <h2 className="text-xs font-semibold uppercase tracking-wide text-slate-500">Quadrant</h2>
         <ul className="mt-3 space-y-2 text-sm">
           {quadrants.map((q) => (
             <li key={q} className="flex items-start gap-3">
@@ -69,7 +69,7 @@ export default function QuadrantLegend({
       </section>
 
       <section className="rounded-lg border border-slate-200 bg-white p-4">
-        <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-500">Pillar</h3>
+        <h2 className="text-xs font-semibold uppercase tracking-wide text-slate-500">Pillar</h2>
         <ul className="mt-3 space-y-1.5 text-sm">
           <li className="flex items-center gap-2">
             <span
@@ -99,9 +99,9 @@ export default function QuadrantLegend({
       </section>
 
       <section className="rounded-lg border border-slate-200 bg-white p-4">
-        <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+        <h2 className="text-xs font-semibold uppercase tracking-wide text-slate-500">
           Top quick wins this quarter
-        </h3>
+        </h2>
         {topQuickWins.length === 0 ? (
           <p className="mt-2 text-xs text-slate-500">
             No Quick Wins yet. Score a use case with high business impact and low IT difficulty to

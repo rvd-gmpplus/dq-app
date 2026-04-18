@@ -42,7 +42,7 @@ export default function ActivityFeed() {
 
   return (
     <div className="rounded-lg border border-slate-200 bg-white p-4">
-      <h3 className="text-sm font-semibold text-slate-900">Recent activity</h3>
+      <h2 className="text-sm font-semibold text-slate-900">Recent activity</h2>
       {recent.length === 0 ? (
         <p className="mt-2 text-xs text-slate-500">
           Edits, scoring changes, and comments will appear here.

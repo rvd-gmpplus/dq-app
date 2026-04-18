@@ -46,7 +46,7 @@ export default function RiskHeatmap({
     <div className="rounded-lg border border-slate-200 bg-white p-4">
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-sm font-semibold text-slate-900">Risk heatmap</h3>
+          <h2 className="text-sm font-semibold text-slate-900">Risk heatmap</h2>
           <p className="text-xs text-slate-500">Likelihood × impact, each cell coloured by score.</p>
         </div>
         <Link to="#register" className="text-xs text-slate-500 hover:text-gmp-purple-700">

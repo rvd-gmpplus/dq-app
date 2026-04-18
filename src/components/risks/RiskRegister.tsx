@@ -49,7 +49,7 @@ export default function RiskRegister({
     <div id="register" className="rounded-lg border border-slate-200 bg-white">
       <div className="flex items-center justify-between border-b border-slate-200 px-4 py-3">
         <div>
-          <h3 className="text-sm font-semibold text-slate-900">Risk register</h3>
+          <h2 className="text-sm font-semibold text-slate-900">Risk register</h2>
           <p className="text-xs text-slate-500">Sorted by score descending.</p>
         </div>
         <button

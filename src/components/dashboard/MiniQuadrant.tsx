@@ -13,7 +13,7 @@ export default function MiniQuadrant({ useCases }: { useCases: UseCase[] }) {
     <div className="flex flex-col gap-3 rounded-lg border border-slate-200 bg-white p-4">
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-sm font-semibold text-slate-900">Quadrant preview</h3>
+          <h2 className="text-sm font-semibold text-slate-900">Quadrant preview</h2>
           <p className="text-xs text-slate-500">Top five use cases by business impact.</p>
         </div>
         <Link

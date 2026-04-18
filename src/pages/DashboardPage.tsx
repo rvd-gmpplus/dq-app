@@ -77,7 +77,7 @@ export default function DashboardPage() {
         </div>
         <div className="flex flex-col gap-4">
           <div className="rounded-lg border border-slate-200 bg-white p-4">
-            <h3 className="text-sm font-semibold text-slate-900">Quadrant distribution</h3>
+            <h2 className="text-sm font-semibold text-slate-900">Quadrant distribution</h2>
             <div className="mt-3 h-48">
               <QuadrantDonut useCases={scored} />
             </div>
