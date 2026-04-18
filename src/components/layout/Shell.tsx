@@ -3,6 +3,7 @@ import { Monitor } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import Header from './Header';
 import NavSidebar from './NavSidebar';
+import { useSettingsStore } from '@/stores/settingsStore';
 import { useFirstRun } from '@/hooks/useFirstRun';
 import OnboardingModal from '@/components/onboarding/OnboardingModal';
 import ToastContainer from '@/components/common/ToastContainer';
@@ -50,6 +51,10 @@ function NarrowViewportNotice() {
 
 export default function Shell() {
   useFirstRun();
+  const theme = useSettingsStore((s) => s.theme);
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', theme === 'dark');
+  }, [theme]);
   const lastPush = useLastPush();
   return (
     <>
