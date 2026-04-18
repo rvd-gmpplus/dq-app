@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react';
+import { useId, useMemo, useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
 import type { Pillar, Quadrant, UseCase } from '@/types/useCase';
 
@@ -17,17 +17,20 @@ export const PILLAR_COLOUR: Record<Pillar, string> = {
   Market: '#EA8004',
 };
 
-const PILLAR_PATTERN_ID: Record<Pillar, string> = {
-  Transparency: 'q-pattern-transparency',
-  Insight: 'q-pattern-insight',
-  Market: 'q-pattern-market',
-};
+
 
 const QUADRANT_TINT: Record<Quadrant, string> = {
   QuickWin: '#38B769',
   Strategic: '#6859A7',
   Filler: '#EA8004',
   DontPursue: '#9CA3AF',
+};
+
+const BCG_LABEL: Record<Quadrant, string> = {
+  QuickWin: 'Cash cows',
+  Strategic: 'Stars',
+  Filler: 'Dogs',
+  DontPursue: 'Question marks',
 };
 
 // Convert score (1..5) to viewBox pixel coordinates.
@@ -91,12 +94,14 @@ export default function QuadrantChart({
   onBubbleDrop,
   colourBlindMode,
   selectedId,
+  bcg,
 }: {
   useCases: UseCase[];
   onBubbleClick: (id: string) => void;
   onBubbleDrop: (event: BubbleDropEvent) => void;
   colourBlindMode: boolean;
   selectedId?: string | null;
+  bcg?: boolean;
 }) {
   const svgRef = useRef<SVGSVGElement | null>(null);
   const [hover, setHover] = useState<HoverState | null>(null);
@@ -104,10 +109,20 @@ export default function QuadrantChart({
 
   const mid = useMemo(
     () => ({
-      x: xFor(3.5),
-      y: yFor(3.5),
+      x: xFor(3),
+      y: yFor(3),
     }),
     [],
+  );
+
+  const uid = useId().replace(/:/g, '');
+  const patternIds: Record<Pillar, string> = useMemo(
+    () => ({
+      Transparency: `q-pt-${uid}`,
+      Insight: `q-pi-${uid}`,
+      Market: `q-pm-${uid}`,
+    }),
+    [uid],
   );
 
   const onPointerDown = (e: React.PointerEvent, id: string) => {
@@ -162,32 +177,20 @@ export default function QuadrantChart({
         aria-label="Quadrant of scored use cases"
       >
         <defs>
-          <pattern
-            id={PILLAR_PATTERN_ID.Transparency}
-            patternUnits="userSpaceOnUse"
-            width="6"
-            height="6"
-          >
-            <rect width="6" height="6" fill={PILLAR_COLOUR.Transparency} />
-            <path d="M0 6 L6 0" stroke="white" strokeWidth="1.5" />
+          <pattern id={patternIds.Transparency} patternUnits="userSpaceOnUse" width="10" height="10">
+            <rect width="10" height="10" fill={PILLAR_COLOUR.Transparency} />
+            <path d="M0 10 L10 0" stroke="white" strokeWidth="2" />
+            <path d="M-2 2 L2 -2" stroke="white" strokeWidth="2" />
+            <path d="M8 12 L12 8" stroke="white" strokeWidth="2" />
           </pattern>
-          <pattern
-            id={PILLAR_PATTERN_ID.Insight}
-            patternUnits="userSpaceOnUse"
-            width="6"
-            height="6"
-          >
-            <rect width="6" height="6" fill={PILLAR_COLOUR.Insight} />
-            <circle cx="3" cy="3" r="1.2" fill="white" />
+          <pattern id={patternIds.Insight} patternUnits="userSpaceOnUse" width="10" height="10">
+            <rect width="10" height="10" fill={PILLAR_COLOUR.Insight} />
+            <circle cx="5" cy="5" r="2" fill="white" />
           </pattern>
-          <pattern
-            id={PILLAR_PATTERN_ID.Market}
-            patternUnits="userSpaceOnUse"
-            width="6"
-            height="6"
-          >
-            <rect width="6" height="6" fill={PILLAR_COLOUR.Market} />
-            <path d="M0 3 H6" stroke="white" strokeWidth="1.5" />
+          <pattern id={patternIds.Market} patternUnits="userSpaceOnUse" width="10" height="10">
+            <rect width="10" height="10" fill={PILLAR_COLOUR.Market} />
+            <path d="M0 5 H10" stroke="white" strokeWidth="2" />
+            <path d="M5 0 V10" stroke="white" strokeWidth="2" />
           </pattern>
         </defs>
 
@@ -249,7 +252,7 @@ export default function QuadrantChart({
           />
         ))}
 
-        {/* Threshold lines at 3.5 */}
+        {/* Threshold lines at 3 */}
         <line
           x1={mid.x}
           x2={mid.x}
@@ -326,7 +329,7 @@ export default function QuadrantChart({
           fontWeight="600"
           fill={QUADRANT_TINT.QuickWin}
         >
-          Quick wins
+          {bcg ? BCG_LABEL.QuickWin : 'Quick wins'}
         </text>
         <text
           x={PLOT.x + PLOT.w - 16}
@@ -336,7 +339,7 @@ export default function QuadrantChart({
           fontWeight="600"
           fill={QUADRANT_TINT.Strategic}
         >
-          Strategic bets
+          {bcg ? BCG_LABEL.Strategic : 'Strategic bets'}
         </text>
         <text
           x={PLOT.x + 16}
@@ -345,7 +348,7 @@ export default function QuadrantChart({
           fontWeight="600"
           fill={QUADRANT_TINT.Filler}
         >
-          Fillers
+          {bcg ? BCG_LABEL.Filler : 'Fillers'}
         </text>
         <text
           x={PLOT.x + PLOT.w - 16}
@@ -355,7 +358,7 @@ export default function QuadrantChart({
           fontWeight="600"
           fill={QUADRANT_TINT.DontPursue}
         >
-          Don't pursue
+          {bcg ? BCG_LABEL.DontPursue : "Don't pursue"}
         </text>
 
         {/* Bubbles */}
@@ -367,7 +370,7 @@ export default function QuadrantChart({
           {useCases.map((uc) => {
             const primaryPillar = uc.pillars[0]!;
             const fill = colourBlindMode
-              ? `url(#${PILLAR_PATTERN_ID[primaryPillar]})`
+              ? `url(#${patternIds[primaryPillar]})`
               : PILLAR_COLOUR[primaryPillar];
             const secondary = uc.pillars[1];
             const r = bubbleRadius(uc);

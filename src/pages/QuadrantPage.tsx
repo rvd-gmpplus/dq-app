@@ -111,6 +111,7 @@ export default function QuadrantPage() {
                       onBubbleDrop={onBubbleDrop}
                       colourBlindMode={settings.colourBlindMode}
                       selectedId={selectedId}
+                      bcg={settings.bcgLabels}
                     />
                   </div>
                 );
@@ -123,6 +124,7 @@ export default function QuadrantPage() {
               onBubbleDrop={onBubbleDrop}
               colourBlindMode={settings.colourBlindMode}
               selectedId={selectedId}
+              bcg={settings.bcgLabels}
             />
           )}
         </div>
