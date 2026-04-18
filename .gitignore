@@ -6,8 +6,9 @@
 *.pptx
 USE-CASES/
 
-# Extraction draft
+# Extraction draft and logo sources
 src/seed/useCases.draft.json
+public/originals/
 
 # Dependencies and build output
 node_modules
