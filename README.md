@@ -125,9 +125,11 @@ frozen at the v1.0 release commit as a release baseline.
 - **Hash routing.** URLs look like `/dq-app/#/quadrant` because GitHub Pages
   cannot server-rewrite to `index.html`. Internal links still behave as
   expected.
-- **PDF fonts.** The Status Report PDF uses Helvetica rather than Segoe UI.
-  `@react-pdf/renderer` cannot embed Windows system fonts at build time. A
-  later version may ship Open Sans or Roboto as a bundled Segoe UI analogue.
+- **PDF fonts.** Microsoft's Segoe UI cannot be embedded in a distributed
+  PDF for licensing reasons, so the Status Report PDF renders in **Open
+  Sans**, bundled under `public/fonts/` as the closest open-source metric
+  analogue. The app UI still uses Segoe UI on Windows (via the CSS font
+  stack).
 
 ## Roadmap (v1.1 and beyond)
 

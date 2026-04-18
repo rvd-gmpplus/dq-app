@@ -3,6 +3,7 @@ import { Download, FileJson, FileText, FileSpreadsheet, Upload, AlertTriangle } 
 import { exportBackupJson, exportUseCasesCsv } from '@/lib/exporters';
 import { applyBackup, parseBackup } from '@/lib/importers';
 import { generateStatusReportPdf } from '@/lib/statusReport';
+import { toast } from '@/lib/toast';
 import { useUseCaseStore } from '@/stores/useCaseStore';
 import { usePhaseStore } from '@/stores/phaseStore';
 import { useRiskStore } from '@/stores/riskStore';
@@ -37,8 +38,9 @@ export default function ExportsPage() {
       await generateStatusReportPdf({ useCases, phases, risks, author });
       setMessage({ tone: 'success', text: 'Status report PDF downloaded.' });
     } catch (err) {
-      console.error(err);
-      setMessage({ tone: 'error', text: 'Failed to render PDF. See console.' });
+      const detail = err instanceof Error ? err.message : 'unknown error';
+      setMessage({ tone: 'error', text: `Failed to render PDF: ${detail}` });
+      toast.error(`PDF render failed: ${detail}`);
     } finally {
       setBusy(false);
     }
@@ -53,8 +55,11 @@ export default function ExportsPage() {
     const text = await file.text();
     const result = parseBackup(text);
     if (!result.ok) {
-      setMessage({ tone: 'error', text: result.error });
-      if (result.issues) console.error(result.issues);
+      const detail = result.issues
+        ? ` (${Array.isArray(result.issues) ? result.issues.length : 1} validation issue(s))`
+        : '';
+      setMessage({ tone: 'error', text: `${result.error}${detail}` });
+      toast.error(result.error);
       return;
     }
     setPendingImport({ payload: result.payload, name: file.name });

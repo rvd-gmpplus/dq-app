@@ -4,6 +4,7 @@ import Header from './Header';
 import NavSidebar from './NavSidebar';
 import { useFirstRun } from '@/hooks/useFirstRun';
 import OnboardingModal from '@/components/onboarding/OnboardingModal';
+import ToastContainer from '@/components/common/ToastContainer';
 
 function NarrowViewportNotice() {
   return (
@@ -45,6 +46,7 @@ export default function Shell() {
         </div>
         <OnboardingModal />
       </div>
+      <ToastContainer />
     </>
   );
 }

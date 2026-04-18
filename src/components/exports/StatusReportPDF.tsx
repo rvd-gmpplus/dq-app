@@ -1,5 +1,6 @@
 import {
   Document,
+  Font,
   Page,
   Path,
   Rect,
@@ -15,6 +16,20 @@ import {
 import type { Phase } from '@/types/phase';
 import type { Risk } from '@/types/risk';
 import type { UseCase, Quadrant } from '@/types/useCase';
+
+// Segoe UI cannot be embedded in a PDF (Microsoft licence) so we bundle
+// Open Sans as the closest open-source metric analogue. Registered once
+// at module load; harmless if called twice thanks to @react-pdf's
+// idempotent family check.
+const FONT_BASE = `${import.meta.env.BASE_URL}fonts/`;
+Font.register({
+  family: 'Open Sans',
+  fonts: [
+    { src: `${FONT_BASE}OpenSans-Regular.ttf` },
+    { src: `${FONT_BASE}OpenSans-Bold.ttf`, fontWeight: 700 },
+    { src: `${FONT_BASE}OpenSans-Italic.ttf`, fontStyle: 'italic' },
+  ],
+});
 
 // A4 landscape @ 72dpi: 842 x 595
 const PAGE = { w: 842, h: 595 };
@@ -56,7 +71,7 @@ const styles = StyleSheet.create({
     paddingLeft: 36,
     paddingRight: 36,
     fontSize: 10,
-    fontFamily: 'Helvetica',
+    fontFamily: 'Open Sans',
     color: COLOUR.slate700,
     backgroundColor: COLOUR.white,
   },
@@ -71,7 +86,8 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontSize: 10,
-    fontFamily: 'Helvetica-Bold',
+    fontFamily: 'Open Sans',
+    fontWeight: 700,
     color: COLOUR.slate900,
   },
   headerSub: {
@@ -84,13 +100,15 @@ const styles = StyleSheet.create({
   },
   h1: {
     fontSize: 18,
-    fontFamily: 'Helvetica-Bold',
+    fontFamily: 'Open Sans',
+    fontWeight: 700,
     color: COLOUR.slate900,
     marginBottom: 4,
   },
   h2: {
     fontSize: 13,
-    fontFamily: 'Helvetica-Bold',
+    fontFamily: 'Open Sans',
+    fontWeight: 700,
     color: COLOUR.slate900,
     marginTop: 14,
     marginBottom: 6,
@@ -123,7 +141,8 @@ const styles = StyleSheet.create({
   },
   kpiValue: {
     fontSize: 22,
-    fontFamily: 'Helvetica-Bold',
+    fontFamily: 'Open Sans',
+    fontWeight: 700,
     color: COLOUR.slate900,
   },
   kpiHint: {
@@ -167,7 +186,8 @@ const styles = StyleSheet.create({
   tdBold: {
     fontSize: 10,
     color: COLOUR.slate900,
-    fontFamily: 'Helvetica-Bold',
+    fontFamily: 'Open Sans',
+    fontWeight: 700,
   },
   caption: {
     fontSize: 8,
@@ -302,10 +322,10 @@ function QuadrantScatter({ useCases }: { useCases: UseCase[] }) {
       </SvgText>
 
       {/* Corner labels */}
-      <SvgText x={padLeft + 6} y={padTop + 12} style={{ fontSize: 9, fontFamily: 'Helvetica-Bold', fill: COLOUR.green }}>Quick wins</SvgText>
-      <SvgText x={padLeft + plotW - 6} y={padTop + 12} style={{ fontSize: 9, fontFamily: 'Helvetica-Bold', fill: COLOUR.purple, textAnchor: 'end' }}>Strategic bets</SvgText>
-      <SvgText x={padLeft + 6} y={padTop + plotH - 4} style={{ fontSize: 9, fontFamily: 'Helvetica-Bold', fill: COLOUR.orange }}>Fillers</SvgText>
-      <SvgText x={padLeft + plotW - 6} y={padTop + plotH - 4} style={{ fontSize: 9, fontFamily: 'Helvetica-Bold', fill: COLOUR.grey, textAnchor: 'end' }}>Don't pursue</SvgText>
+      <SvgText x={padLeft + 6} y={padTop + 12} style={{ fontSize: 9, fontFamily: 'Open Sans', fontWeight: 700, fill: COLOUR.green }}>Quick wins</SvgText>
+      <SvgText x={padLeft + plotW - 6} y={padTop + 12} style={{ fontSize: 9, fontFamily: 'Open Sans', fontWeight: 700, fill: COLOUR.purple, textAnchor: 'end' }}>Strategic bets</SvgText>
+      <SvgText x={padLeft + 6} y={padTop + plotH - 4} style={{ fontSize: 9, fontFamily: 'Open Sans', fontWeight: 700, fill: COLOUR.orange }}>Fillers</SvgText>
+      <SvgText x={padLeft + plotW - 6} y={padTop + plotH - 4} style={{ fontSize: 9, fontFamily: 'Open Sans', fontWeight: 700, fill: COLOUR.grey, textAnchor: 'end' }}>Don't pursue</SvgText>
 
       {/* Bubbles */}
       {scored.map((uc) => {
@@ -315,7 +335,7 @@ function QuadrantScatter({ useCases }: { useCases: UseCase[] }) {
         return (
           <G key={uc.id}>
             <Circle cx={x} cy={y} r={9} fill={fill} stroke={COLOUR.white} strokeWidth={1.5} />
-            <SvgText x={x} y={y + 3} style={{ fontSize: 6, fill: COLOUR.white, textAnchor: 'middle', fontFamily: 'Helvetica-Bold' }}>
+            <SvgText x={x} y={y + 3} style={{ fontSize: 6, fill: COLOUR.white, textAnchor: 'middle', fontFamily: 'Open Sans', fontWeight: 700 }}>
               {uc.code.replace('UC-', '')}
             </SvgText>
           </G>
@@ -422,7 +442,7 @@ function PhaseStripe({ phases, width }: { phases: Phase[]; width: number }) {
         );
       })}
       <Line x1={labelW + nowX} y1={0} x2={labelW + nowX} y2={H - 14} stroke={COLOUR.rose} strokeWidth={1} strokeDasharray="2 2" />
-      <SvgText x={labelW + nowX} y={H - 4} style={{ fontSize: 7, fill: COLOUR.rose, textAnchor: 'middle', fontFamily: 'Helvetica-Bold' }}>NOW</SvgText>
+      <SvgText x={labelW + nowX} y={H - 4} style={{ fontSize: 7, fill: COLOUR.rose, textAnchor: 'middle', fontFamily: 'Open Sans', fontWeight: 700 }}>NOW</SvgText>
     </Svg>
   );
 }

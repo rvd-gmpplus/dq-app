@@ -1,4 +1,5 @@
 import type { ZodType } from 'zod';
+import { toast } from './toast';
 
 export type Migration<T> = (prev: unknown) => T;
 
@@ -58,11 +59,22 @@ export function createPersistedSlice<T extends { schemaVersion: number }>(
   const listeners = new Set<(value: T) => void>();
   let timer: ReturnType<typeof setTimeout> | null = null;
 
+  let reportedWriteError = false;
   const persist = () => {
     try {
       localStorage.setItem(key, JSON.stringify(cached));
+      reportedWriteError = false;
     } catch (err) {
-      console.error(`Failed to persist slice ${key}`, err);
+      // Only surface the first write error per session; repeat failures
+      // would otherwise stack toasts on every keystroke.
+      if (!reportedWriteError) {
+        reportedWriteError = true;
+        const message =
+          err instanceof DOMException && err.name === 'QuotaExceededError'
+            ? 'Browser storage is full. Export a JSON backup, then reset old data from Settings.'
+            : `Failed to save changes to "${key}". Export a JSON backup now to avoid data loss.`;
+        toast.error(message);
+      }
     }
   };
 
