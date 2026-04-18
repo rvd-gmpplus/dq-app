@@ -43,3 +43,6 @@ coverage
 # Alternative lockfiles (we use npm)
 pnpm-lock.yaml
 yarn.lock
+
+# Local lighthouse audit output
+lighthouse-*.json
