@@ -23,7 +23,7 @@ import type { UseCase, Quadrant } from '@/types/useCase';
 // at module load; harmless if called twice thanks to @react-pdf's
 // idempotent family check.
 const FONT_BASE = `${import.meta.env.BASE_URL}fonts/`;
-const LOGO_SRC = `${import.meta.env.BASE_URL}logos/GMP+international-landscape.png`;
+const LOGO_SRC = `${import.meta.env.BASE_URL}logos/gmp-international-landscape.png`;
 Font.register({
   family: 'Open Sans',
   fonts: [
