@@ -1,4 +1,6 @@
+import { Shield } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import EmptyState from '@/components/common/EmptyState';
 import { useStakeholderStore } from '@/stores/stakeholderStore';
 import { useDataObjectStore } from '@/stores/dataObjectStore';
 import { useRaciStore } from '@/stores/raciStore';
@@ -36,9 +38,17 @@ export default function RaciMatrix() {
 
   if (stakeholders.length === 0 || dataObjects.length === 0) {
     return (
-      <div className="rounded-lg border border-dashed border-slate-200 bg-white px-5 py-8 text-center text-sm text-slate-500">
-        Add stakeholders and data objects before mapping RACI.
-      </div>
+      <EmptyState
+        icon={Shield}
+        title="Matrix needs stakeholders and data objects"
+        description={
+          stakeholders.length === 0 && dataObjects.length === 0
+            ? 'Add at least one stakeholder and one data object before the RACI grid can be drawn.'
+            : stakeholders.length === 0
+              ? 'Add at least one stakeholder to populate the rows of the RACI grid.'
+              : 'Add at least one data object to populate the columns of the RACI grid.'
+        }
+      />
     );
   }
 
@@ -87,7 +97,7 @@ export default function RaciMatrix() {
                         designation ? RACI_STYLE[designation] : 'bg-slate-50 text-slate-400 hover:bg-slate-100',
                       )}
                     >
-                      {designation ?? '—'}
+                      {designation ?? '·'}
                     </button>
                   </td>
                 );

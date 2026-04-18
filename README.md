@@ -15,26 +15,26 @@ https://rvd-gmpplus.github.io/dq-app/
 
 ## Screens
 
-- **Dashboard** — four KPIs, a mini quadrant, quadrant distribution, current
+- **Dashboard**: four KPIs, a mini quadrant, quadrant distribution, current
   phase deliverables, budget burn, and recent activity.
-- **Use cases** — sortable filterable list with URL-synced filters, bulk
+- **Use cases**: sortable filterable list with URL-synced filters, bulk
   status change, new-use-case sheet, inline-edit detail across three tabs
   (Overview, Scoring with live radar, History and comments).
-- **Quadrant** — custom interactive SVG. Hover, click, drag to rescore.
+- **Quadrant**: custom interactive SVG. Hover, click, drag to rescore.
   PNG and PDF export. Colour-blind pattern fallback. BCG-label and
   group-by-pillar toggles.
-- **Strategic pillars** — three priority-ordered tiles with editable
+- **Strategic pillars**: three priority-ordered tiles with editable
   ambition, OGSM targets, and the Data Vision legacy mapping.
-- **Phases** — custom SVG Gantt with planned versus actual bars, a NOW
+- **Phases**: custom SVG Gantt with planned versus actual bars, a NOW
   marker, and per-phase accordion for deliverables and blockers.
-- **Data governance** — interactive RACI matrix (R → A → C → I → blank per
+- **Data governance**: interactive RACI matrix (R, A, C, I, blank per
   cell) plus Data Governance Group roster.
-- **Risks** — 5 × 5 heatmap and editable register. Scores recompute as
+- **Risks**: 5 × 5 heatmap and editable register. Scores recompute as
   likelihood × impact on save.
-- **Stakeholders** — filterable card grid with initials avatars.
-- **Exports and backup** — full JSON backup and restore, CSV export for
+- **Stakeholders**: filterable card grid with initials avatars.
+- **Exports and backup**: full JSON backup and restore, CSV export for
   Excel, and the five-page A4 landscape Status Report PDF.
-- **Settings** — current user (from stakeholder list or free text), project
+- **Settings**: current user (from stakeholder list or free text), project
   budget, scoring weights with reset, theme, colour-blind mode, BCG labels,
   and a danger-zone reset.
 
@@ -45,10 +45,10 @@ https://rvd-gmpplus.github.io/dq-app/
 - Zod for runtime validation (types, store slices, import payloads).
 - Tailwind CSS 3 with GMP+ brand tokens (`#6859A7`, `#38B769`, `#EA8004`) and
   Segoe UI at 11pt base.
-- React Router 6 in hash-routing mode (GitHub Pages can't rewrite unknown
+- React Router 6 in hash-routing mode (GitHub Pages cannot rewrite unknown
   paths, so hashes are the portable choice).
 - Recharts for the dashboard donut and the radar on the scoring tab.
-- Pure SVG for the quadrant, phases Gantt, and risk heatmap — custom
+- Pure SVG for the quadrant, phases Gantt, and risk heatmap. Custom
   pointer-event drag on the quadrant, no `@dnd-kit` overlay.
 - `@react-pdf/renderer` for the Status Report PDF, dynamic-imported so it
   stays out of the initial bundle.
@@ -101,31 +101,32 @@ Everything lives in your browser. Export a JSON backup on a schedule that
 matches your risk tolerance (weekly is reasonable). The Exports and backup
 screen has three buttons:
 
-- **JSON backup** — every store, losslessly.
-- **CSV** — flat table of every use case for Excel work.
-- **Status Report PDF** — five-page branded report for MT updates.
+- **JSON backup**: every store, losslessly.
+- **CSV**: flat table of every use case for Excel work.
+- **Status Report PDF**: five-page branded report for MT updates.
 
 Restore via the same screen by choosing a JSON file. The app asks you to
-type `YES` before replacing local state.
+type REPLACE in a confirmation dialog before overwriting local state.
 
 ## Deployment
 
-GitHub Pages is enabled on `rvd-gmpplus/dq-app`, source set to the
-`Deploy to GitHub Pages` workflow. Every push to `main` runs the CI
-workflow (lint, tests, build) and, when green, publishes the `dist/`
-folder to Pages. Deploy time is under a minute.
+GitHub Pages is enabled on `rvd-gmpplus/dq-app`. Every push to `v1` runs
+the deploy workflow, which lints, tests, builds, and publishes the `dist/`
+folder to Pages. Pushes to `main` run CI only (no deploy), so `main` stays
+frozen at the v1.0 release commit as a release baseline.
 
 ## Known limitations
 
 - **Desktop-first (≥1024px).** Mobile is explicitly not a v1 target; below
-  1024px the app functions but layout isn't optimised.
+  1024px the app renders a graceful full-screen notice rather than a cramped
+  layout.
 - **Single user.** No authentication, no concurrent editing. Changes live
   in one browser profile. Supabase multi-user is on the v1.1+ list.
 - **Hash routing.** URLs look like `/dq-app/#/quadrant` because GitHub Pages
-  can't server-rewrite to `index.html`. Internal links still behave as
+  cannot server-rewrite to `index.html`. Internal links still behave as
   expected.
 - **PDF fonts.** The Status Report PDF uses Helvetica rather than Segoe UI.
-  `@react-pdf/renderer` can't embed Windows system fonts at build time. A
+  `@react-pdf/renderer` cannot embed Windows system fonts at build time. A
   later version may ship Open Sans or Roboto as a bundled Segoe UI analogue.
 
 ## Roadmap (v1.1 and beyond)
@@ -142,4 +143,4 @@ folder to Pages. Deploy time is under a minute.
 
 ## Contact
 
-Rick van Dijk (IT Lead) — project owner.
+Rick van Dijk (IT Lead), project owner.

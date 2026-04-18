@@ -185,7 +185,7 @@ function pageHeader(periodLabel: string, author: string, pageNum: string) {
   return (
     <View style={styles.header} fixed>
       <View>
-        <Text style={styles.headerTitle}>GMP+ Data Quality Project — Status</Text>
+        <Text style={styles.headerTitle}>GMP+ Data Quality Project: Status</Text>
         <Text style={styles.headerSub}>
           {periodLabel} · {author}
         </Text>
@@ -456,7 +456,7 @@ export default function StatusReportPDF({
 
   return (
     <Document
-      title={`GMP+ DQ Status — ${period}`}
+      title={`GMP+ DQ Status: ${period}`}
       author={author}
       creator="GMP+ DQ app"
       producer="GMP+ DQ app"
@@ -490,7 +490,7 @@ export default function StatusReportPDF({
           </View>
           <View style={styles.kpiCell}>
             <Text style={styles.kpiLabel}>Current phase</Text>
-            <Text style={styles.kpiValue}>{currentPhase?.name ?? '—'}</Text>
+            <Text style={styles.kpiValue}>{currentPhase?.name ?? 'n/a'}</Text>
             <Text style={styles.kpiHint}>{currentPhase?.status ?? ''}</Text>
           </View>
         </View>
@@ -626,7 +626,7 @@ export default function StatusReportPDF({
                 {p.plannedStart.slice(0, 10)} → {p.plannedEnd.slice(0, 10)}
               </Text>
               <Text style={[styles.td, { width: 120 }]}>
-                {p.actualStart?.slice(0, 10) ?? '—'} → {p.actualEnd?.slice(0, 10) ?? (p.actualStart ? 'ongoing' : '—')}
+                {p.actualStart?.slice(0, 10) ?? 'not started'} → {p.actualEnd?.slice(0, 10) ?? (p.actualStart ? 'ongoing' : 'not started')}
               </Text>
               <Text style={[styles.td, { width: 90 }]}>{p.status}</Text>
             </View>

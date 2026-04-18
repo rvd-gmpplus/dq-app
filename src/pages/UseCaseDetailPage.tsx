@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams, useSearchParams, Link } from 'react-router-dom';
-import { ArrowLeft, Copy, Printer, Trash2 } from 'lucide-react';
+import { ArrowLeft, Copy, Printer, Trash2, FileQuestion } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useUseCaseStore } from '@/stores/useCaseStore';
 import { useSettingsStore } from '@/stores/settingsStore';
@@ -8,6 +8,7 @@ import QuadrantBadge from '@/components/common/QuadrantBadge';
 import StatusBadge from '@/components/common/StatusBadge';
 import PillarBadge from '@/components/common/PillarBadge';
 import ConfirmTypedDialog from '@/components/common/ConfirmTypedDialog';
+import EmptyState from '@/components/common/EmptyState';
 import OverviewTab from '@/components/useCase/OverviewTab';
 import ScoringTab from '@/components/useCase/ScoringTab';
 import HistoryTimeline from '@/components/useCase/HistoryTimeline';
@@ -38,7 +39,14 @@ export default function UseCaseDetailPage() {
   }, [id, getById, navigate]);
 
   if (!uc) {
-    return <div className="text-sm text-slate-500">Use case not found.</div>;
+    return (
+      <EmptyState
+        icon={FileQuestion}
+        title="Use case not found"
+        description="This use case may have been deleted, or the link points at a store that was reset. Return to the list to pick another."
+        action={{ label: 'Back to use cases', onClick: () => navigate('/use-cases') }}
+      />
+    );
   }
 
   const setTab = (t: Tab) => {

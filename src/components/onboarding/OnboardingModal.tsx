@@ -46,19 +46,19 @@ export default function OnboardingModal() {
           <ul className="mt-3 space-y-1 text-sm">
             <li className="flex items-start gap-2">
               <span className="mt-1 h-2.5 w-2.5 shrink-0 rounded-full bg-gmp-green" aria-hidden="true" />
-              <span><span className="font-semibold">Quick wins</span> — act immediately.</span>
+              <span><span className="font-semibold">Quick wins:</span> act immediately.</span>
             </li>
             <li className="flex items-start gap-2">
               <span className="mt-1 h-2.5 w-2.5 shrink-0 rounded-full bg-gmp-purple" aria-hidden="true" />
-              <span><span className="font-semibold">Strategic bets</span> — put on the roadmap.</span>
+              <span><span className="font-semibold">Strategic bets:</span> put on the roadmap.</span>
             </li>
             <li className="flex items-start gap-2">
               <span className="mt-1 h-2.5 w-2.5 shrink-0 rounded-full bg-gmp-orange" aria-hidden="true" />
-              <span><span className="font-semibold">Fillers</span> — decide case by case.</span>
+              <span><span className="font-semibold">Fillers:</span> decide case by case.</span>
             </li>
             <li className="flex items-start gap-2">
               <span className="mt-1 h-2.5 w-2.5 shrink-0 rounded-full bg-slate-400" aria-hidden="true" />
-              <span><span className="font-semibold">Don't pursue</span> — reject.</span>
+              <span><span className="font-semibold">Don't pursue:</span> reject.</span>
             </li>
           </ul>
 
@@ -101,7 +101,7 @@ export default function OnboardingModal() {
               onClick={dismiss}
               className="rounded-md bg-gmp-purple px-4 py-2 text-sm font-medium text-white hover:bg-gmp-purple-700"
             >
-              Got it — let me in
+              Got it, let me in
             </button>
           </div>
         </div>

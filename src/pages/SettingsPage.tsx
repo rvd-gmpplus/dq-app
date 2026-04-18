@@ -104,7 +104,7 @@ export default function SettingsPage() {
             <option value="">(free text below)</option>
             {stakeholders.map((x) => (
               <option key={x.id} value={x.id}>
-                {x.name} — {x.role}
+                {x.name}, {x.role}
               </option>
             ))}
           </select>

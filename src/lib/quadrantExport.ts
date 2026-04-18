@@ -40,7 +40,7 @@ export async function exportQuadrantPdf(el: HTMLElement): Promise<void> {
   pdf.setFont('helvetica', 'bold');
   pdf.setFontSize(12);
   pdf.setTextColor(15, 23, 42);
-  pdf.text('GMP+ Data Quality Project — Quadrant', marginX, marginY);
+  pdf.text('GMP+ Data Quality Project: Quadrant', marginX, marginY);
   pdf.setFont('helvetica', 'normal');
   pdf.setFontSize(9);
   pdf.setTextColor(100, 116, 139);

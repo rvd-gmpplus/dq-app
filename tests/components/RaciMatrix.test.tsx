@@ -25,7 +25,7 @@ describe('RaciMatrix', () => {
     const button = screen.getByRole('button', {
       name: new RegExp(`raci for ${stakeholder.name} on ${dataObject.name}`, 'i'),
     });
-    expect(button.textContent).toBe('—');
+    expect(button.textContent).toBe('·');
     await user.click(button);
     expect(button.textContent).toBe('R');
     await user.click(button);
@@ -35,7 +35,7 @@ describe('RaciMatrix', () => {
     await user.click(button);
     expect(button.textContent).toBe('I');
     await user.click(button);
-    expect(button.textContent).toBe('—');
+    expect(button.textContent).toBe('·');
     expect(useRaciStore.getState().getCell(stakeholder.id, dataObject.id)).toBeUndefined();
   });
 });

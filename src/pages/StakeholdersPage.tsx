@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
-import { Search } from 'lucide-react';
+import { Search, Users } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import EmptyState from '@/components/common/EmptyState';
 import { useStakeholderStore } from '@/stores/stakeholderStore';
 import { StakeholderGroupEnum } from '@/types/stakeholder';
 import type { StakeholderGroup } from '@/types/stakeholder';
@@ -73,11 +74,32 @@ export default function StakeholdersPage() {
         </span>
       </div>
 
-      <section className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {filtered.map((s) => (
-          <StakeholderCard key={s.id} stakeholder={s} />
-        ))}
-      </section>
+      {stakeholders.length === 0 ? (
+        <EmptyState
+          icon={Users}
+          title="No stakeholders yet"
+          description="Seed data populates Mirella, Martin, Rik, Stan, and the SMEs on first run. Restore a backup or reset from Settings to repopulate."
+        />
+      ) : filtered.length === 0 ? (
+        <EmptyState
+          icon={Users}
+          title="No stakeholders match these filters"
+          description="Try a different group, clear the search, or widen the filter."
+          action={{
+            label: 'Clear filters',
+            onClick: () => {
+              setGroup('All');
+              setSearch('');
+            },
+          }}
+        />
+      ) : (
+        <section className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {filtered.map((s) => (
+            <StakeholderCard key={s.id} stakeholder={s} />
+          ))}
+        </section>
+      )}
     </div>
   );
 }
