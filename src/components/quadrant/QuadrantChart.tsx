@@ -236,7 +236,7 @@ export default function QuadrantChart({
             x2={xFor(x)}
             y1={PLOT.y}
             y2={PLOT.y + PLOT.h}
-            stroke={x === 1 || x === 5 ? '#cbd5e1' : '#e2e8f0'}
+            stroke={x === 1 || x === 5 ? 'var(--chart-grid-border)' : 'var(--chart-grid-minor)'}
             strokeWidth={1}
           />
         ))}
@@ -247,7 +247,7 @@ export default function QuadrantChart({
             x2={PLOT.x + PLOT.w}
             y1={yFor(y)}
             y2={yFor(y)}
-            stroke={y === 1 || y === 5 ? '#cbd5e1' : '#e2e8f0'}
+            stroke={y === 1 || y === 5 ? 'var(--chart-grid-border)' : 'var(--chart-grid-minor)'}
             strokeWidth={1}
           />
         ))}
@@ -258,7 +258,7 @@ export default function QuadrantChart({
           x2={mid.x}
           y1={PLOT.y}
           y2={PLOT.y + PLOT.h}
-          stroke="#94a3b8"
+          stroke="var(--chart-threshold)"
           strokeWidth={1.5}
           strokeDasharray="4 4"
         />
@@ -267,7 +267,7 @@ export default function QuadrantChart({
           x2={PLOT.x + PLOT.w}
           y1={mid.y}
           y2={mid.y}
-          stroke="#94a3b8"
+          stroke="var(--chart-threshold)"
           strokeWidth={1.5}
           strokeDasharray="4 4"
         />
@@ -280,7 +280,7 @@ export default function QuadrantChart({
             y={PLOT.y + PLOT.h + 20}
             textAnchor="middle"
             fontSize="12"
-            fill="#64748b"
+            fill="var(--chart-text)"
           >
             {x}
           </text>
@@ -292,7 +292,7 @@ export default function QuadrantChart({
             y={yFor(y) + 4}
             textAnchor="end"
             fontSize="12"
-            fill="#64748b"
+            fill="var(--chart-text)"
           >
             {y}
           </text>
@@ -305,7 +305,7 @@ export default function QuadrantChart({
           textAnchor="middle"
           fontSize="13"
           fontWeight="600"
-          fill="#334155"
+          fill="var(--chart-axis-label)"
         >
           IT / Data difficulty (1 = easy, 5 = hard)
         </text>
@@ -315,7 +315,7 @@ export default function QuadrantChart({
           textAnchor="middle"
           fontSize="13"
           fontWeight="600"
-          fill="#334155"
+          fill="var(--chart-axis-label)"
           transform={`rotate(-90, 18, ${PLOT.y + PLOT.h / 2})`}
         >
           Business impact (1 = minimal, 5 = maximal)
