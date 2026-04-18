@@ -2,7 +2,7 @@ import type { BusinessImpact, ItDataImpact, Quadrant, UseCase } from '@/types/us
 import type { ScoringWeights } from '@/types/settings';
 
 const round1 = (n: number) => Math.round(n * 10) / 10;
-const THRESHOLD = 3.5;
+const THRESHOLD = 3;
 
 type BusinessSubScores = Omit<BusinessImpact, 'score' | 'notes'>;
 type ItDataSubScores = Omit<ItDataImpact, 'score' | 'notes'>;

@@ -4,7 +4,7 @@ import { nowIso } from '@/lib/dates';
 import { buildDiffs } from '@/lib/diffs';
 import { newId, nextUseCaseCode } from '@/lib/ids';
 import { createPersistedSlice } from '@/lib/persistence';
-import { recomputeUseCaseScores } from '@/lib/scoring';
+import { deriveQuadrant, recomputeUseCaseScores } from '@/lib/scoring';
 import { useSettingsStore } from '@/stores/settingsStore';
 import { UseCaseSchema, type UseCase, type UseCaseStatus } from '@/types/useCase';
 
@@ -62,8 +62,16 @@ export const useUseCaseStore = create<State & Actions>((set, get) => {
     set(next);
   };
 
+  const hydrated = slice.read();
+  const migratedItems: Record<string, UseCase> = {};
+  for (const [id, uc] of Object.entries(hydrated.items)) {
+    migratedItems[id] = { ...uc, quadrant: deriveQuadrant(uc.businessImpact.score, uc.itDataImpact.score) };
+  }
+  const initialState = { ...hydrated, items: migratedItems };
+  if (Object.keys(migratedItems).length > 0) slice.write(initialState);
+
   return {
-    ...slice.read(),
+    ...initialState,
 
     list: () => Object.values(get().items).sort((a, b) => a.code.localeCompare(b.code)),
     getById: (id) => get().items[id],
